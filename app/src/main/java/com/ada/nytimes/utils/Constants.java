@@ -14,4 +14,6 @@ public class Constants {
     public static final String DATE_FORMAT = "MM/dd/yyyy";
 
     public static final String PARAM_ITEM = "item";
+
+    public static final String FRAGMENT_SEARCH_ADVANCED = "fragment_search_advanced";
 }

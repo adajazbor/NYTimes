@@ -2,6 +2,9 @@
     <string name="app_name">NYTimes</string>
     <string name="network.connection_lost">Internet Connection Lost</string>
     <string name="network.connection_renewed">Internet Connected</string>
+    <string name="btn_search">Search</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="no_results_info">No Articles Founded</string>
 
     <string-array name="news_desk">
         <item>Adventure Sports</item>

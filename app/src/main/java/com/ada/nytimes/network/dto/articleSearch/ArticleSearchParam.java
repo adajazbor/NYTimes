@@ -92,6 +92,10 @@ public class ArticleSearchParam {
         return sb.toString();
     }
 
+    public void increasePage() {
+        this.page++;
+    }
+
     public void resetPage() {
         setPage(0);
     }
