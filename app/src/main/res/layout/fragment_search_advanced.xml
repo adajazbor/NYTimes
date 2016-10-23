@@ -1,5 +1,6 @@
 <layout  xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="sParams" type="com.ada.nytimes.network.dto.articleSearch.ArticleSearchParam"/>
     </data>
@@ -8,34 +9,166 @@
         android:layout_height="match_parent"
         tools:context=".fragments.SearchAdvancedFragment">
 
-        <EditText
-            android:id="@+id/etDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{sParams.beginDate}"/>
+        <LinearLayout
+            android:id="@+id/searchForm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
 
-        <EditText
-            android:id="@+id/etQ"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/etDate"
-            android:text="@{sParams.q}"/>
+            <!-- name -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnDone"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_search"
-            android:layout_below="@+id/etQ" />
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_label"
+                    style="@style/labelFont"
+                    />
 
-        <Button
-            android:id="@+id/btnBack"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_cancel"
-            android:layout_below="@+id/btnDone" />
+                <EditText
+                    android:id="@+id/etQ"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{sParams.q}"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    style="@style/inputFont"/>
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/begin_date_label"
+                    style="@style/labelFont"
+                    />
+
+                <DatePicker
+                    android:id="@+id/dpDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:calendarViewShown="false"
+                    android:datePickerMode="spinner"/>
+            </LinearLayout>
+<!--
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/details_view_row_horizontal_margin"
+                android:layout_marginRight="@dimen/details_view_row_horizontal_margin"
+                android:layout_marginBottom="20dp"
+                android:background="@android:color/darker_gray"/>
+                -->
+
+            <!-- order by -->
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_by_label"
+                    style="@style/labelFont"
+                    />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/scOrder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:textOff="Newest"
+                    android:textOn="Oldest"
+                    app:showText="true"/>
+
+            </LinearLayout>
+
+
+            <!-- options -->
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/news_desk_label"
+                    style="@style/labelFont"
+                    />
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:orientation="vertical">
+                    <CheckBox
+                        android:id="@+id/cb_news_desk_arts"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/news_desk_value_arts"/>
+                    <CheckBox
+                        android:id="@+id/cb_news_desk_fashion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/news_desk_value_fasion"/>
+                    <CheckBox
+                        android:id="@+id/cb_news_desk_sports"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/news_desk_value_sport"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- buttons -->
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnDone"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_search"
+                    android:layout_gravity="left"/>
+
+                <Button
+                    android:id="@+id/btnBack"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_cancel"
+                    android:layout_gravity="right" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
 
     </RelativeLayout>
 </layout>

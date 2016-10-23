@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 
 import com.ada.nytimes.R;
 import com.ada.nytimes.databinding.FragmentSearchAdvancedBinding;
@@ -19,16 +19,15 @@ import com.ada.nytimes.utils.Constants;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class SearchAdvancedFragment extends DialogFragment {
 
     private ArticleSearchParam mParams;
     private SearchAdvancedDialogListener mListener;
     private FragmentSearchAdvancedBinding binding;
-
-    private DatePicker dpDue;
-    private EditText etDate;
-    private EditText etQ;
 
     public SearchAdvancedFragment() {
         // Empty constructor is required for DialogFragment
@@ -75,6 +74,11 @@ public class SearchAdvancedFragment extends DialogFragment {
         */
 
         //refreshUiFromItem();
+        binding.cbNewsDeskArts.setChecked(mParams.getNewDeskList().contains("Arts"));
+        binding.cbNewsDeskSports.setChecked(mParams.getNewDeskList().contains("Sports"));
+        binding.cbNewsDeskFashion.setChecked(mParams.getNewDeskList().contains("Fashion & Style"));
+        dateToDatePicker(mParams.getBeginDate());
+        binding.scOrder.setChecked(ArticleSearchParam.SortValues.oldest.name().equals(mParams.getSort()));
 
         Button btnDone = (Button) view.findViewById(R.id.btnDone);
         View.OnClickListener onEdit = getOnDoneListener();
@@ -83,46 +87,51 @@ public class SearchAdvancedFragment extends DialogFragment {
         Button btnBack = (Button) view.findViewById(R.id.btnBack);
         View.OnClickListener onBack = getOnBackListener();
         btnBack.setOnClickListener(onBack);
-/*
-        Button btnEdit = (Button) view.findViewById(R.id.btnEdit);
-        View.OnClickListener onEdit = getOnEditListener();
-        btnEdit.setOnClickListener(onEdit);
 
-        Button btnCancel = (Button) view.findViewById(R.id.btnDelete);
-        View.OnClickListener onCancel = getOnDeleteListener();
-        btnCancel.setOnClickListener(onCancel);
-
-
-        */
     }
 
-    private void refreshUiFromItem() {
-        //etDate.setText(mParams.getBeginDate());
-        //etDate.setText(mParams.getQ());
-        /*
-        tvName.setText(mItem.getName());
-        tvDue.setText(Utils.formatDay(mItem.getDueDate()));
-        tvNotes.setText(mItem.getNotes());
-        tvPriority.setText(mPriorities[mItem.getPriority()]);
-        tvStatus.setText(mItem.getStatus());
-        */
+    private void dateToDatePicker(String date) {
+        //date format YYYYmmDD
+        if (TextUtils.isEmpty(date) || date.length() != 8) {
+            binding.dpDate.updateDate(1000, 1, 1);
+        } else {
+            //yes I know it is not the best practice
+            binding.dpDate.updateDate(Integer.valueOf(date.substring(0, 4)), Integer.valueOf(date.substring(4, 6)), Integer.valueOf(date.substring(6, 8)));
+        }
+    }
+
+    private String datePickerToString(DatePicker dp) {
+        return String.format("%04d%02d%02d", dp.getYear(), dp.getMonth(), dp.getDayOfMonth());
     }
 
     private View.OnClickListener getOnDoneListener() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // mParams.setBeginDate(etDate.getText().toString());
-               // mParams.setQ(etQ.getText().toString());
+                mParams.setBeginDate(datePickerToString(binding.dpDate));
                 mParams.setQ(binding.etQ.getText().toString());
-                mParams.setBeginDate(binding.etDate.getText().toString());
+                //   mParams.setNewsDesk(binding.etQ.getText().toString());
+                mParams.setSort((binding.scOrder.isChecked() ? ArticleSearchParam.SortValues.oldest : ArticleSearchParam.SortValues.newest));
+                mParams.setNewsDesk(newsDeckToList());
                 mParams.resetPage();
-             //   mParams.setNewsDesk(binding.etQ.getText().toString());
-               // mParams.setSort(binding.etSort.getText().toString());
                 mListener.onDataChanged(Parcels.wrap(mParams));
                 dismiss();
             }
         };
+    }
+
+    private List<String> newsDeckToList() {
+        List<String> result = new ArrayList<>();
+        if (binding.cbNewsDeskArts.isChecked()) {
+            result.add("Arts");
+        }
+        if (binding.cbNewsDeskFashion.isChecked()) {
+            result.add("Fashion & Style");
+        }
+        if (binding.cbNewsDeskSports.isChecked()) {
+            result.add("Sports");
+        }
+        return result;
     }
 
     private View.OnClickListener getOnBackListener() {

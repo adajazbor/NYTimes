@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         scrollListener = new EndlessRecycleViewScrollListener(lLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                mSearchParams.increasePage();
-                readItems(true);
+                Log.d("on Load More", "page = " + page);
+                readItems(page);
             }
 /*
             @Override
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         swipeContainer = binding.swipeContainer;
         swipeContainer.setOnRefreshListener(() -> {
-            readItems(false);
+            readItems();
         });
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
@@ -119,25 +119,32 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(i);
                     }
                 });
-        readItems(false);
+        readItems();
     }
 
     //==== data opperations
-    private boolean readItems(boolean nextPage) {
-        new NYTimesServiceImpl().getArticlesList(mSearchParams, getArticleListResponseCallback(nextPage));
+    private boolean readItems(int page) {
+        mSearchParams.setPage(page);
+        Log.d("READ ITEM HIS", "page = " + mSearchParams.getPage());
+        new NYTimesServiceImpl().getArticlesList(mSearchParams, getArticleListResponseCallback(page > 0));
         return true;
     }
 
-    private Callback<ArticlesResponse> getArticleListResponseCallback(boolean nextPage) {
+    private boolean readItems() {
+        Log.d("READ ITEM my", "page = " + mSearchParams.getPage());
+        return readItems(0);
+    }
+
+    private Callback<ArticlesResponse> getArticleListResponseCallback(final boolean nextPage) {
         return new Callback<ArticlesResponse>() {
             @Override
             public void onResponse(Call<ArticlesResponse> call, Response<ArticlesResponse> response) {
-                ArticlesResponse reponse = response.body();
+                ArticlesResponse res = response.body();
                 if (!nextPage) {
                     articles.clear();
                 }
-                if (response != null && reponse.getResponse() != null && reponse.getResponse().getDocs() != null) {
-                    articles.addAll(reponse.getResponse().getDocs());
+                if (res != null && res.getResponse() != null && res.getResponse().getDocs() != null) {
+                    articles.addAll(res.getResponse().getDocs());
                     aToDoAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(MainActivity.this, R.string.no_results_info, Toast.LENGTH_LONG);
@@ -170,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 mSearchParams.resetPage();
                 mSearchParams.setQ(query);
-                readItems(false);
+                readItems();
                 searchView.clearFocus();
                 return true;
             }
@@ -184,19 +191,19 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                /*
+
                 mSearchParams.setQ(null);
                 Log.d("MENU OPTIONS", "expand");
-                readItems(false);
-                */
-                return false;
+                readItems();
+
+                return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 Log.d("MENU OPTIONS", "collapse");
                 mSearchParams.setQ(null);
-                readItems(false);
+                readItems();
                 return true;
             }
         });
@@ -206,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onClose() {
                 Log.d("MENU OPTIONS", "close");
                 mSearchParams.setQ(null);
-                readItems(false);
+                readItems();
                 return false;
             }
         });
@@ -223,10 +230,6 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         Log.d("MENU OPTIONS", "itemId = " + id + ", advanced = " + android.R.id.home);
         switch (id) {
-            case android.R.id.home:
-                mSearchParams.setQ(null);
-                readItems(false);
-                return super.onOptionsItemSelected(item);
             case R.id.miSearchItemAdvanced:
                 showAdvancedSearchDialog();
                 return false;
@@ -243,6 +246,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onDataChanged() {
-        readItems(false);
+        readItems();
     }
 }

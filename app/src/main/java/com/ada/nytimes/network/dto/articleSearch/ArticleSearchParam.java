@@ -73,11 +73,11 @@ public class ArticleSearchParam {
         if (!TextUtils.isEmpty(getQ())) {
             result.put("q", getQ());
         }
-        if (!TextUtils.isEmpty(getBeginDate())) {
+        if (!TextUtils.isEmpty(getBeginDate()) && !getBeginDate().startsWith("1000")) {
             result.put("begin_date", getBeginDate());
         }
         if (getNewsDesk() != null && getNewsDesk().size() > 0) {
-            result.put("fl", getNewDeskList());
+            result.put("fq", getNewDeskList());
         }
         result.put("page", (getPage() == null ? "0" : getPage().toString()));
         result.put("sort", (getSort() == null ? SortValues.newest.name() : getSort().name()));

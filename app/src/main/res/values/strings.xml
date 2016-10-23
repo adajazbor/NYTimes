@@ -5,6 +5,13 @@
     <string name="btn_search">Search</string>
     <string name="btn_cancel">Cancel</string>
     <string name="no_results_info">No Articles Founded</string>
+    <string name="begin_date_label">Begin</string>
+    <string name="order_by_label">Order By</string>
+    <string name="news_desk_label">News Desk</string>
+    <string name="news_desk_value_arts">Arts</string>
+    <string name="news_desk_value_fasion"><![CDATA[Fashion & Style]]></string>
+    <string name="news_desk_value_sport">Sports</string>
+    <string name="search_label">Search</string>
 
     <string-array name="news_desk">
         <item>Adventure Sports</item>

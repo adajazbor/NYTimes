@@ -1,5 +1,7 @@
 package com.ada.nytimes.network;
 
+import android.util.Log;
+
 import com.ada.nytimes.network.dto.articleSearch.ArticleSearchParam;
 import com.ada.nytimes.network.dto.articleSearch.ArticlesResponse;
 import com.ada.nytimes.utils.Constants;
@@ -28,9 +30,9 @@ public class NYTimesServiceImpl {
 
     public void getArticlesList(ArticleSearchParam articleSearchDTO, Callback<ArticlesResponse> callback) {
 
-
         NYTimesService service = retrofit.create(NYTimesService.class);
         Call<ArticlesResponse> call = service.getArticles(articleSearchDTO.getAsMap(), Constants.NY_TIMES_API_KEY);
+        Log.d("URL", String.format("query = %s", call.request().url().query()));
         call.enqueue(callback);
     }
 }
