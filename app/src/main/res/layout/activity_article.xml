@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="article" type="com.ada.nytimes.network.dto.articleSearch.Doc"/>
+        <import type="android.view.View" />
+        <import type="com.ada.nytimes.adapters.AdapterUtils"/>
+    </data>
+    <RelativeLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context="com.ada.nytimes.activities.ArticleActivity">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@{`Pub: ` + article.formatedPubDate}"/>
+
+
+        <WebView
+            android:id="@+id/wvArticle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"/>
+    </RelativeLayout>
+</layout>
