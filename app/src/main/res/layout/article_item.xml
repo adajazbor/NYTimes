@@ -3,33 +3,44 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable name="article" type="com.ada.nytimes.network.dto.articleSearch.Doc"/>
+        <variable name="iter" type="java.lang.Boolean"/>
         <import type="android.view.View" />
     </data>
     <RelativeLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_green_dark">
 
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:text="@{article.headline.main}"
             tools:text="title"
-            android:background="@android:color/holo_red_dark"/>
+            android:layout_marginRight="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginStart="1dp"
+            android:background="@color/evenTitleBackgroud"/>
 
         <TextView
             android:id="@+id/tvSnipped"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvTitle"
             android:text="@{article.snippet}"
             tools:text="snipped"
             android:maxLines="5"
             android:ellipsize="end"
-            android:background="@android:color/holo_red_light"/>
+            android:layout_marginBottom="2dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginStart="1dp"
+            android:background="@color/evenTextBackgroud"/>
 
     </RelativeLayout>
 </layout>

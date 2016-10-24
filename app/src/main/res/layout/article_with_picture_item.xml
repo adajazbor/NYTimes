@@ -4,13 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="article" type="com.ada.nytimes.network.dto.articleSearch.Doc"/>
+        <variable name="iter" type="java.lang.Boolean"/>
         <import type="android.view.View" />
         <import type="com.ada.nytimes.adapters.AdapterUtils"/>
     </data>
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_green_dark">
 
         <ImageView
             android:id="@+id/ivImage"
@@ -18,18 +20,29 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             app:imageUrl="@{article.pictureUrl}"
-            android:background="@android:color/holo_blue_light"/>
+            android:background="@android:color/holo_green_dark"/>
+            <!--
+            android:background="@{iter ? @color/oddTextBackgroud : @color/evenTextBackgroud}"/>
+            -->
 
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ivImage"
             android:text="@{article.headline.main}"
             tools:text="Large Text"
             android:maxLines="2"
             android:ellipsize="end"
-            android:background="@android:color/holo_blue_dark"/>
+            android:layout_marginBottom="2dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginStart="1dp"
+            android:background="@color/oddTitleBackgroud"/>
+        <!--
+            android:background="@{iter ? @color/oddTitleBackgroud : @color/evenTitleBackgroud}"/>
+            -->
 
 
     </RelativeLayout>

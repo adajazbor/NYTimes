@@ -50,14 +50,14 @@ public class MainActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeContainer;
     private ActivityMainBinding binding;
 
-    private ArticleSearchParam mSearchParams;
+    private ArticleSearchParam mSearchParams = new ArticleSearchParam();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        mSearchParams = new ArticleSearchParam();
+
         populateArrayItems();
         setupToolbar();
 
@@ -71,15 +71,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("on Load More", "page = " + page);
                 readItems(page);
             }
-/*
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
-                mSearchParams.increasePage();
-                loadNextDataFromApi(page);
-            }
-            */
         };
         // Adds the scroll listener to RecyclerView
         rvItems.addOnScrollListener(scrollListener);
@@ -122,16 +113,18 @@ public class MainActivity extends AppCompatActivity {
         readItems();
     }
 
-    //==== data opperations
+    //==== data operations
     private boolean readItems(int page) {
         mSearchParams.setPage(page);
-        Log.d("READ ITEM HIS", "page = " + mSearchParams.getPage());
+        if (miClear != null) {
+           Log.d("CLEAR MENU", "try set to " +  !mSearchParams.isEmpty());
+            miClear.setVisible(!mSearchParams.isEmpty());
+        }
         new NYTimesServiceImpl().getArticlesList(mSearchParams, getArticleListResponseCallback(page > 0));
         return true;
     }
 
     private boolean readItems() {
-        Log.d("READ ITEM my", "page = " + mSearchParams.getPage());
         return readItems(0);
     }
 
@@ -165,13 +158,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //================ menu
+    SearchView searchView;
+    MenuItem miClear;
+    MenuItem miAdvanced;
+    MenuItem miSearchItem;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
 
         inflater.inflate(R.menu.menu_main, menu);
-        MenuItem searchItem = menu.findItem(R.id.miSearchItem);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        miClear = menu.findItem(R.id.miClear);
+        miAdvanced = menu.findItem(R.id.miSearchItemAdvanced);
+        miSearchItem = menu.findItem(R.id.miSearchItem);
+
+        miClear.setVisible(false);
+        miAdvanced.setVisible(true);
+
+        searchView = (SearchView) MenuItemCompat.getActionView(miSearchItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -187,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+        MenuItemCompat.setOnActionExpandListener(miSearchItem, new MenuItemCompat.OnActionExpandListener() {
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
@@ -233,6 +238,14 @@ public class MainActivity extends AppCompatActivity {
             case R.id.miSearchItemAdvanced:
                 showAdvancedSearchDialog();
                 return false;
+            case android.R.id.home:
+                return super.onOptionsItemSelected(item);
+            case R.id.miClear:
+                mSearchParams.reset();
+                readItems();
+                searchView.setQuery(null, false);
+                searchView.onActionViewCollapsed();
+                return false;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -240,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
     private void showAdvancedSearchDialog() {
         SearchAdvancedFragment dialog = SearchAdvancedFragment.newInstance((params) -> {
             mSearchParams = Parcels.unwrap(params);
+            searchView.setQuery(mSearchParams.getQ(), false);
             MainActivity.this.onDataChanged()
             ;}, mSearchParams);
         dialog.show(getSupportFragmentManager(), Constants.FRAGMENT_SEARCH_ADVANCED);

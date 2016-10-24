@@ -73,15 +73,23 @@ public class ArticleSearchParam {
         if (!TextUtils.isEmpty(getQ())) {
             result.put("q", getQ());
         }
-        if (!TextUtils.isEmpty(getBeginDate()) && !getBeginDate().startsWith("1000")) {
+        if (!isDateEmpty()) {
             result.put("begin_date", getBeginDate());
         }
-        if (getNewsDesk() != null && getNewsDesk().size() > 0) {
+        if (!isNewsDeskEmpty()) {
             result.put("fq", getNewDeskList());
         }
         result.put("page", (getPage() == null ? "0" : getPage().toString()));
         result.put("sort", (getSort() == null ? SortValues.newest.name() : getSort().name()));
         return result;
+    }
+
+    private boolean isDateEmpty() {
+        return TextUtils.isEmpty(getBeginDate()) || getBeginDate().startsWith("19000101");
+    }
+
+    private boolean isNewsDeskEmpty() {
+        return getNewsDesk() == null || getNewsDesk().size() < 1;
     }
 
     public String getNewDeskList() {
@@ -98,5 +106,16 @@ public class ArticleSearchParam {
 
     public void resetPage() {
         setPage(0);
+    }
+
+    public boolean isEmpty() {
+        return TextUtils.isEmpty(getQ()) && isDateEmpty() && isNewsDeskEmpty() && (getSort() == null || SortValues.newest.equals(getSort()));
+    }
+    public void reset() {
+        this.setQ(null);
+        this.setSort(SortValues.newest);
+        this.setNewsDesk(new ArrayList<>());
+        this.setBeginDate(null);
+        this.resetPage();
     }
 }

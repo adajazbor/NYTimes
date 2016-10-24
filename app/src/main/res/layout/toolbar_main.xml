@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:titleTextColor="@android:color/white"
-        app:title="@{title ?? `No title`}"
+        app:title="@{title ?? `News`}"
         android:background="@android:color/holo_blue_dark">
     </android.support.v7.widget.Toolbar>
 </layout>
