@@ -1,8 +1,8 @@
 # Project 2 - *Name of App Here*
 
-**Name of your app** is an android app that allows a user to search for articles on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
+NYTimes is an android app that allows a user to search for articles on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
 
-Time spent: **X** hours spent in total
+Time spent: 30 hours spent in total
 
 ## User Stories
 
@@ -47,7 +47,10 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<video width="320" height="240" controls>
+                                                    <source src="https://www.dropbox.com/s/xus0jlo6xcq6q6b/osprey_retus_2gbMPI24.65-25ada10232016214357.mp4?raw=1" type="video/mp4">
+                                                    Your browser does not support the video tag. Vidoe URL: https://www.dropbox.com/s/xus0jlo6xcq6q6b/osprey_retus_2gbMPI24.65-25ada10232016214357.mp4?raw=1
+                                                  </video>
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
